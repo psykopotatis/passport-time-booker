@@ -1,0 +1,19 @@
+{
+  "name": "passport-time-booker",
+  "version": "1.0.0",
+  "description": "automated passport time booker",
+  "main": "index.js",
+  "scripts": {
+    "pass": "npx nightwatch pass.js --env chrome",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^13.5.1"
+  },
+  "devDependencies": {
+    "chromedriver": "^99.0.0",
+    "nightwatch": "^2.0.10"
+  }
+}
