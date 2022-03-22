@@ -1,33 +1,57 @@
+var moment = require('moment');
+
 describe('Pass', function() {
 
     before(browser => browser.navigateTo('https://bokapass.nemoq.se/Booking/Booking/Index/stockholm'));
 
     it('Boka tid', function(browser) {
         browser
+            // Startsidan
             .waitForElementVisible('body')
-            .assert.titleContains('Tidsbokning för pass / nationellt id-kort')
             .assert.visible('input[type=submit]')
             .pause(1000)
             .click('input[type=submit]')
+
+            // Dataskyddsinformation, välja antal personer
             .waitForElementVisible('body')
-            .pause(1000)
-            .assert.visible('#AcceptInformationStorage')
             .click('#AcceptInformationStorage')
             .click('#NumberOfPeople')
             .click('#NumberOfPeople option[value="2"]')
             .pause(1000)
             .click('input[type=submit]')
+
+            // Boende - ja, jag bor i Sverige
             .waitForElementVisible('body')
             .click('#ServiceCategoryCustomers_0__ServiceCategoryId')
             .click('#ServiceCategoryCustomers_1__ServiceCategoryId')
             .pause(1000)
             .click('input[type=submit]')
+
+            // Sök tid - första lediga tid
             .waitForElementVisible('body')
             .click('input[name=TimeSearchFirstAvailableButton]')
+
+            // Sök tid - resultat
             .waitForElementVisible('body')
+            .pause(1000)
+            .getValue('input[id=datepicker]', function(result) {
+                console.log("Date: " + result.value);
+                const isBefore = moment(result.value).isBefore('2022-09-26');
+                console.log(isBefore);
+                if (isBefore) {
+                    this.click('div[data-sectionid="43"]');
+                    this.pause(1000);
+                    this.click('input[id=booking-next]');
+                    this.waitForElementVisible('body');
 
-            .pause(10000)
+                    // Enter info
+                    this.setValue('#Customers_0__BookingFieldValues_0__Value', 'förnamn');
+                    this.setValue('#Customers_0__BookingFieldValues_1__Value', 'efternamn');
+                    this.click('#Customers_0__Services_0__IsSelected');
 
+                }
+            })
+            .pause(10000000)
     });
 
     after(browser => browser.end());
