@@ -15,7 +15,6 @@ describe('Pass', function() {
             // Dataskyddsinformation, välja antal personer
             .waitForElementVisible('body')
             .click('#AcceptInformationStorage')
-            .click('#NumberOfPeople')
             .click('#NumberOfPeople option[value="2"]')
             .pause(1000)
             .click('input[type=submit]')
@@ -39,7 +38,20 @@ describe('Pass', function() {
                 const isBefore = moment(result.value).isBefore('2022-09-26');
                 console.log(isBefore);
                 if (isBefore) {
-                    this.click('div[data-sectionid="43"]');
+                    // Get all buttons at
+                    this.elements('css selector', 'div[data-sectionid="43"]', function (result) {
+                        // Check for suitable time
+                        for (var i = 0; i < result.value.length; i++) {
+                            const id = result.value[i];
+                            console.log(id);
+                        }
+                        console.log(result);
+                        console.log(result.value);
+                        console.log(result.value[0].elementIdText);
+                        console.log(result[0].elementIdValue);
+
+                    });
+
                     this.pause(1000);
                     this.click('input[id=booking-next]');
                     this.waitForElementVisible('body');
